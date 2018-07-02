@@ -20,6 +20,4 @@ val diKodein = Kodein {
     bind<MovieApi>() with  singleton { MovieApiFactory.makeMovieApi() }
     bind<IMovieRepository>() with singleton { MovieRepository(instance(), instance()) }
     bind<IMoviesInteractor>() with singleton { MoviesInteractor(instance()) }
-
-
 }

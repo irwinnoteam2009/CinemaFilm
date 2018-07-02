@@ -1,7 +1,6 @@
 package ru.meteoctx.hellboys.cinemafilm.data.model
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class GenreEntity(val name: String)
 
