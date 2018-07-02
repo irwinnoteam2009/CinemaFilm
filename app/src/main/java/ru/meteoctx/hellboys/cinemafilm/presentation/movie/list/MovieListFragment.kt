@@ -18,24 +18,13 @@ class MovieListFragment: MvpAppCompatFragment(), MovieListView {
 
     companion object {
         const val TAG = "MovieList"
-
-        fun newInstance(onItemClick: (movie: Movie) -> Unit = {}): MovieListFragment {
-            val fragment = MovieListFragment()
-            fragment.adapter = MovieListAdapter{
-                onItemClick(it)
-            }
-            return fragment
-        }
     }
 
     @InjectPresenter lateinit var presenter: MovieListPresenter
     @ProvidePresenter fun provideMainPresenter(): MovieListPresenter = MovieListPresenter(diKodein)
-    private lateinit var adapter: MovieListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
+    private var adapter: MovieListAdapter = MovieListAdapter()
+    private var onMovieSelectedListener: MovieListAdapter.OnMovieSelectedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -43,8 +32,16 @@ class MovieListFragment: MvpAppCompatFragment(), MovieListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        adapter.setMovieSelectedListener(onMovieSelectedListener)
         movies.initWithAdapter(context!!, adapter)
+    }
+
+    fun setMovieSelectListener(action: (movie: Movie) -> Unit) {
+        onMovieSelectedListener = object : MovieListAdapter.OnMovieSelectedListener {
+            override fun onSelect(movie: Movie) {
+                action(movie)
+            }
+        }
     }
 
     override fun startLoading() {
@@ -67,5 +64,4 @@ class MovieListFragment: MvpAppCompatFragment(), MovieListView {
     override fun showNoContent() {
         movies.visibility = View.GONE
     }
-
 }

@@ -10,8 +10,13 @@ import com.bumptech.glide.Glide
 import ru.meteoctx.hellboys.cinemafilm.R
 import ru.meteoctx.hellboys.cinemafilm.domain.model.Movie
 
-class MovieListAdapter(private val onItemClick: (movie: Movie) -> Unit = {}): RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter: RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
     private val movies = mutableListOf<Movie>()
+    private var callback: OnMovieSelectedListener? = null
+
+    interface OnMovieSelectedListener {
+        fun onSelect(movie: Movie)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
@@ -31,7 +36,9 @@ class MovieListAdapter(private val onItemClick: (movie: Movie) -> Unit = {}): Re
         notifyDataSetChanged()
     }
 
-    fun getMovies(): List<Movie> = movies
+    fun setMovieSelectedListener(listener: OnMovieSelectedListener?) {
+        callback = listener
+    }
 
     inner class ViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
 
@@ -44,7 +51,7 @@ class MovieListAdapter(private val onItemClick: (movie: Movie) -> Unit = {}): Re
                     .load(movie.posterPath)
                     .into(poster)
 
-            view.setOnClickListener { onItemClick(movie) }
+            view.setOnClickListener { callback?.onSelect(movie) }
         }
     }
 }

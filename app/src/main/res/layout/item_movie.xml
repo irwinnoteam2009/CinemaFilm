@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,6 +9,8 @@
         android:id="@+id/poster"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:contentDescription="@null"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"/>
@@ -18,7 +21,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/poster"
         android:layout_marginStart="8dp"
-        android:text="title"
+        android:text="@string/title_text"
         />
 
 </android.support.constraint.ConstraintLayout>
