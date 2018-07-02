@@ -1,6 +1,7 @@
 package ru.meteoctx.hellboys.cinemafilm.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class GenreEntity(val name: String)
 
@@ -8,7 +9,7 @@ data class MovieEntity (
         val adult: Boolean? = false,
         val genres: List<GenreEntity>,
         val id: Int,
-        @SerializedName("original_name")
+        @SerializedName("original_language")
         val originalLang: String?,
         @SerializedName("original_title")
         val originalTitle: String?,
