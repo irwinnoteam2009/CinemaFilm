@@ -1,34 +1,42 @@
 package ru.meteoctx.hellboys.cinemafilm.presentation.main
 
+import android.app.FragmentTransaction
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import ru.meteoctx.hellboys.cinemafilm.R
-import ru.meteoctx.hellboys.cinemafilm.di.diKodein
-
+import ru.meteoctx.hellboys.cinemafilm.presentation.movie.info.MovieInfoFragment
+import ru.meteoctx.hellboys.cinemafilm.presentation.movie.list.MovieListFragment
 
 class MainActivity: MvpAppCompatActivity(), MainView {
-    @InjectPresenter lateinit var presenter: MainPresenter
 
-    @ProvidePresenter fun provideMainPresenter(): MainPresenter = MainPresenter(diKodein)
+    @InjectPresenter lateinit var presenter: MainPresenter
+    private lateinit var moviesFragment: MovieListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
+
+         if (savedInstanceState == null) {
+            moviesFragment = MovieListFragment.newInstance {
+                val infoFragment = MovieInfoFragment.newInstance(0, it)
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, infoFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .commit()
+            }
+
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.container, moviesFragment, MovieListFragment.TAG)
+                    .commit()
+        } else
+             moviesFragment = supportFragmentManager.findFragmentByTag(MovieListFragment.TAG) as MovieListFragment
+
+
     }
 
-    override fun startLoading() {
-
-    }
-
-    override fun stopLoading() {
-
-    }
-
-    override fun showError(text: String) {
-        Snackbar.make(findViewById(R.id.main_activity), text, Snackbar.LENGTH_LONG).show()
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }
