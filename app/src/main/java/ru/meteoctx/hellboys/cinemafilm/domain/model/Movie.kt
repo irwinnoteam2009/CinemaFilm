@@ -1,6 +1,8 @@
 package ru.meteoctx.hellboys.cinemafilm.domain.model
 
-data class Genre(val name: String)
+import java.io.Serializable
+
+data class Genre(val name: String): Serializable
 
 data class Movie (
         val adult: Boolean? = false,
@@ -16,4 +18,4 @@ data class Movie (
         val video: String? = null,
         val voteAverage: Float? = null,
         val voteCount: Int? = null
-)
+): Serializable
