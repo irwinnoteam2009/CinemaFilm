@@ -47,6 +47,9 @@ class MovieListPresenter(private val kodein: Kodein): MvpPresenter<MovieListView
     private fun loadMovies() {
         compositeDisposable.add(interactor.getMovies()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    viewState.startLoading()
+                }
                 .subscribe(
                         {
                             viewState.stopLoading()

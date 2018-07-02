@@ -45,11 +45,15 @@ class MovieListFragment: MvpAppCompatFragment(), MovieListView {
     }
 
     override fun startLoading() {
-
+        no_content.visibility = View.GONE
+        movies.visibility = View.GONE
+        loading.visibility = View.VISIBLE
     }
 
     override fun stopLoading() {
-
+        loading.visibility = View.GONE
+        no_content.visibility = View.GONE
+        movies.visibility = View.VISIBLE
     }
 
     override fun showError(text: String) {
@@ -63,5 +67,7 @@ class MovieListFragment: MvpAppCompatFragment(), MovieListView {
 
     override fun showNoContent() {
         movies.visibility = View.GONE
+        loading.visibility = View.GONE
+        no_content.visibility = View.VISIBLE
     }
 }
