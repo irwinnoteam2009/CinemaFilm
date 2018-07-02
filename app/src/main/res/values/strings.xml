@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CinemaFilm</string>
+    <string name="title_text">Movie title here</string>
+    <string name="original_name">Original name here</string>
+    <string name="overview">Overview here</string>
+    <string name="key">Key</string>
+    <string name="value">Value</string>
+
 </resources>
