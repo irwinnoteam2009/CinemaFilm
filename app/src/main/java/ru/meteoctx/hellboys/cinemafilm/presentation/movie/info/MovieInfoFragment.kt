@@ -20,11 +20,12 @@ import ru.meteoctx.hellboys.cinemafilm.R
 import ru.meteoctx.hellboys.cinemafilm.domain.model.Movie
 import ru.meteoctx.hellboys.cinemafilm.presentation.common.bundle
 import ru.meteoctx.hellboys.cinemafilm.presentation.common.initWithAdapter
+import ru.meteoctx.hellboys.cinemafilm.presentation.movie.poster.MoviePosterActivity
 
 class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
 
     companion object {
-        const val TAG = "MovieInfo"
+        const val TAG = "MovieInfoFragment"
 
         fun newInstance(movie: Movie): MovieInfoFragment {
             val fragment = MovieInfoFragment()
@@ -55,13 +56,22 @@ class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
 
         title.text = movie.title
         original_name.text = movie.originalTitle
+        poster.setOnClickListener {
+            MoviePosterActivity.start(context!!, movie.posterPath)
+        }
         Glide.with(this).load(movie.posterPath).into(poster)
         overview.text = movie.overview
         info.initWithAdapter(context!!, adapter)
 
         adapter.setField("Release", movie.releaseAt ?: "")
         adapter.setField("Popularity", movie.popularity?.toString() ?: "0")
-        adapter.setField("Vote", "${movie.voteAverage?.toString()} (${movie.voteCount?.toString()})" ?: "0 (0)")
+        adapter.setField("Vote", "${movie.voteAverage?.toString() ?: 0} (${movie.voteCount?.toString() ?: 0})")
+        val sb = StringBuilder()
+        movie.genres.forEachIndexed { index, genre ->
+            if (sb.isNotEmpty()) sb.append(", ")
+            sb.append(genre.name)
+        }
+        adapter.setField("Genre: ", sb.toString())
 
         val position: Long = savedInstanceState?.getLong(PLAYER_POSITION) ?: 0
         val play: Boolean = savedInstanceState?.getBoolean(PLAYER_PLAY) ?: true
