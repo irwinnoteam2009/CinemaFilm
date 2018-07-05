@@ -36,6 +36,9 @@ class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
         }
     }
 
+    private val PLAYER_POSITION = "position"
+    private val PLAYER_PLAY = "play"
+
     @InjectPresenter lateinit var presenter: MovieInfoPresenter
     private val adapter: InfoAdapter = InfoAdapter()
     private var player: SimpleExoPlayer? = null
@@ -60,12 +63,14 @@ class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
         adapter.setField("Popularity", movie.popularity?.toString() ?: "0")
         adapter.setField("Vote", "${movie.voteAverage?.toString()} (${movie.voteCount?.toString()})" ?: "0 (0)")
 
-        val position: Long = savedInstanceState?.getLong("position") ?: 0
-        initPlayer(movie.video, position)
+        val position: Long = savedInstanceState?.getLong(PLAYER_POSITION) ?: 0
+        val play: Boolean = savedInstanceState?.getBoolean(PLAYER_PLAY) ?: true
+        initPlayer(movie.video, position, play)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putLong("position", player?.currentPosition ?: 0)
+        outState.putLong(PLAYER_POSITION, player?.currentPosition ?: 0)
+        outState.putBoolean(PLAYER_PLAY, player?.playWhenReady ?: true)
         super.onSaveInstanceState(outState)
     }
 
@@ -74,7 +79,7 @@ class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
         super.onPause()
     }
 
-    private fun initPlayer(url: String?, position: Long) {
+    private fun initPlayer(url: String?, position: Long, play: Boolean) {
         url ?: return
 
         val bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter()
@@ -82,7 +87,7 @@ class MovieInfoFragment: MvpAppCompatFragment(), MovieInfoView {
         val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
         player  = ExoPlayerFactory.newSimpleInstance(context, trackSelector)
         player_view.player = player
-        player?.playWhenReady = true
+        player?.playWhenReady = play
 
         val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
                 context,
