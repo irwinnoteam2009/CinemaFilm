@@ -18,5 +18,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.movie.poster.MoviePosterActivity" />
+
     </application>
 </manifest>

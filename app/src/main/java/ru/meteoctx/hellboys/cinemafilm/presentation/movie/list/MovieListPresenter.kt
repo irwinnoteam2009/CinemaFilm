@@ -9,7 +9,6 @@ import com.github.salomonbrys.kodein.lazy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import ru.meteoctx.hellboys.cinemafilm.domain.interactor.IMoviesInteractor
-import ru.meteoctx.hellboys.cinemafilm.domain.model.Movie
 
 @InjectViewState
 class MovieListPresenter(private val kodein: Kodein): MvpPresenter<MovieListView>() {
