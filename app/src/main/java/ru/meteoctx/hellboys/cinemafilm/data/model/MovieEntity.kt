@@ -6,7 +6,8 @@ data class GenreEntity(val name: String)
 
 data class MovieEntity (
         val adult: Boolean? = false,
-        val genres: List<GenreEntity>,
+        @SerializedName(value = "genres", alternate = [ "genre_ids"])
+        val genres: List<GenreEntity>?,
         val id: Int,
         @SerializedName("original_language")
         val originalLang: String?,
